@@ -56,27 +56,28 @@ a.navigation:hover {
 a.navigation:active {
   color: #ff0000;
 }
-.carousel-inner {
-  padding: 1em;
-}
-.carousel-control-prev,
-.carousel-control-next {
-  background-color: #e1e1e1;
-  width: 6vh;
-  height: 6vh;
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-}
 @media (min-width: 768px) {
+  /* Convert the inner wrapper to a flex row */
+  .carousel-inner {
+    display: flex;
+  }
+  
+  /* Display 3 cards at once (100% / 3 = 33.33%) */
   .carousel-item {
     margin-right: 0;
     flex: 0 0 33.333333%;
     display: block;
   }
-  .carousel-inner {
-    display: flex;
-  }
+}
+
+/* Optional styling to tweak control button visibility over cards */
+.carousel-control-prev, .carousel-control-next {
+  width: 5%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  height: 40px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 	
     </style>
@@ -617,11 +618,11 @@ a.navigation:active {
         </div> 
 
         </div>
- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+  <button class="carousel-control-prev" type="button" data-bs-target="#multiCardCarousel" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+  <button class="carousel-control-next" type="button" data-bs-target="#multiCardCarousel" data-bs-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
@@ -634,7 +635,47 @@ a.navigation:active {
     
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <scipt>
-	const carousel = new bootstrap.Carousel('#multiCardCarousel')
+document.addEventListener("DOMContentLoaded", function () {
+  const carousel = document.querySelector("#multiCardCarousel");
+
+  if (window.matchMedia("(min-width: 768px)").matches) {
+    // Initialize the Bootstrap carousel instance with slide cycle turned off
+    const bootCarousel = new bootstrap.Carousel(carousel, {
+      interval: false,
+      wrap: false
+    });
+
+    const carouselInner = carousel.querySelector(".carousel-inner");
+    const cardWidth = carousel.querySelector(".carousel-item").offsetWidth;
+    let scrollPosition = 0;
+
+    // Next Action
+    carousel.querySelector(".carousel-control-next").addEventListener("click", function (e) {
+      e.preventDefault();
+      const maxScroll = carouselInner.scrollWidth - (cardWidth * 3);
+      if (scrollPosition < maxScroll) {
+        scrollPosition += cardWidth;
+        carouselInner.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth"
+        });
+      }
+    });
+
+    // Prev Action
+    carousel.querySelector(".carousel-control-prev").addEventListener("click", function (e) {
+      e.preventDefault();
+      if (scrollPosition > 0) {
+        scrollPosition -= cardWidth;
+        carouselInner.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth"
+        });
+      }
+    });
+  }
+});
+
 </scipt>
   </body>
 </html>
