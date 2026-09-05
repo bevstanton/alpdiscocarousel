@@ -57,29 +57,15 @@ a.navigation:active {
   color: #ff0000;
 }
 @media (min-width: 768px) {
-  /* Convert the inner wrapper to a flex row */
   .carousel-inner {
     display: flex;
   }
-  
-  /* Display 3 cards at once (100% / 3 = 33.33%) */
   .carousel-item {
     margin-right: 0;
-    flex: 0 0 33.333333%;
+    flex: 0 0 33.3333%; /* Displays 3 items at a time */
     display: block;
   }
 }
-
-/* Optional styling to tweak control button visibility over cards */
-.carousel-control-prev, .carousel-control-next {
-  width: 5%;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
-  height: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-	
     </style>
 <!-- Primary Meta Tags -->
 <title>Arthur Loves Plastic on YouTube</title>
@@ -109,7 +95,7 @@ a.navigation:active {
 <div class="album py-2">
     <div class="container">
 		
-<div id="multiCardCarousel" class="carousel slide" data-bs-ride="false">
+<div id="advancedCarousel" class="carousel slide" data-bs-ride="false">
   <div class="carousel-inner p-2">
 		
         <div class="carousel-item active">		
@@ -618,13 +604,11 @@ a.navigation:active {
         </div> 
 
         </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#multiCardCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
+<button class="carousel-control-prev" type="button" data-bs-target="#advancedCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
   </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#multiCardCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
+  <button class="carousel-control-next" type="button" data-bs-target="#advancedCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
   </button>
 	
       </div>
@@ -635,44 +619,20 @@ a.navigation:active {
     
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <scipt>
-document.addEventListener("DOMContentLoaded", function () {
-  const carousel = document.querySelector("#multiCardCarousel");
+const items = document.querySelectorAll('#advancedCarousel .carousel-item');
 
-  if (window.matchMedia("(min-width: 768px)").matches) {
-    // Initialize the Bootstrap carousel instance with slide cycle turned off
-    const bootCarousel = new bootstrap.Carousel(carousel, {
-      interval: false,
-      wrap: false
-    });
-
-    const carouselInner = carousel.querySelector(".carousel-inner");
-    const cardWidth = carousel.querySelector(".carousel-item").offsetWidth;
-    let scrollPosition = 0;
-
-    // Next Action
-    carousel.querySelector(".carousel-control-next").addEventListener("click", function (e) {
-      e.preventDefault();
-      const maxScroll = carouselInner.scrollWidth - (cardWidth * 3);
-      if (scrollPosition < maxScroll) {
-        scrollPosition += cardWidth;
-        carouselInner.scrollTo({
-          left: scrollPosition,
-          behavior: "smooth"
-        });
-      }
-    });
-
-    // Prev Action
-    carousel.querySelector(".carousel-control-prev").addEventListener("click", function (e) {
-      e.preventDefault();
-      if (scrollPosition > 0) {
-        scrollPosition -= cardWidth;
-        carouselInner.scrollTo({
-          left: scrollPosition,
-          behavior: "smooth"
-        });
-      }
-    });
+items.forEach((el) => {
+  const minPerSlide = 3; // Number of items visible at once
+  let next = el.nextElementSibling;
+  
+  for (var i = 1; i < minPerSlide; i++) {
+    if (!next) {
+      // Wrap around back to the first element
+      next = items[0];
+    }
+    let cloneChild = next.cloneNode(true);
+    el.appendChild(cloneChild.children[0]);
+    next = next.nextElementSibling;
   }
 });
 
