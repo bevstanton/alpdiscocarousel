@@ -61,6 +61,28 @@ a.navigation:hover {
 a.navigation:active {
   color: #ff0000;
 }
+.carousel-inner {
+  padding: 1em;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: #e1e1e1;
+  width: 6vh;
+  height: 6vh;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media (min-width: 768px) {
+  .carousel-item {
+    margin-right: 0;
+    flex: 0 0 33.333333%;
+    display: block;
+  }
+  .carousel-inner {
+    display: flex;
+  }
+}
 	
     </style>
 <!-- Primary Meta Tags -->
@@ -90,7 +112,7 @@ a.navigation:active {
 
 <div class="album py-2">
     <div class="container">
-<div id="myCarousel" class="carousel slide">	
+<div id="carouselExampleControls" class="carousel">
     <div class="carousel-inner">
 		
         <div class="carousel-item active">		
@@ -616,11 +638,37 @@ a.navigation:active {
    </footer>
 	
 <script>
-		const myCarouselElement = document.querySelector('#myCarousel')
-const carousel = new bootstrap.Carousel(myCarouselElement, {
-  interval: 2000, // Time in milliseconds between slides
-  touch: true     // Support swiping on mobile devices
-})
+var multipleCardCarousel = document.querySelector(
+  "#carouselExampleControls"
+);
+if (window.matchMedia("(min-width: 768px)").matches) {
+  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+    interval: false,
+  });
+  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+  var cardWidth = $(".carousel-item").width();
+  var scrollPosition = 0;
+  $("#carouselExampleControls .carousel-control-next").on("click", function () {
+    if (scrollPosition < carouselWidth - cardWidth * 4) {
+      scrollPosition += cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+    if (scrollPosition > 0) {
+      scrollPosition -= cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+} else {
+  $(multipleCardCarousel).addClass("slide");
+}
 		</script>
 </script>	
   </body>
