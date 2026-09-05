@@ -90,7 +90,7 @@ a.navigation:active {
 
 <div class="album py-2">
     <div class="container">
-<div id="carouselExampleControls" class="carousel">	
+<div id="myCarousel" class="carousel slide">	
     <div class="carousel-inner">
 		
         <div class="carousel-item active">		
@@ -616,7 +616,11 @@ a.navigation:active {
    </footer>
 	
 <script>
-	const carousel = new bootstrap.Carousel('#carouselExampleControls')
+		const myCarouselElement = document.querySelector('#myCarousel')
+const carousel = new bootstrap.Carousel(myCarouselElement, {
+  interval: 2000, // Time in milliseconds between slides
+  touch: true     // Support swiping on mobile devices
+})
 		</script>
 </script>	
   </body>
