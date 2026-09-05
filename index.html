@@ -68,7 +68,7 @@ a.navigation:active {
   top: 50%;
   transform: translateY(-50%);
 }
-@media (min-width: 768px) {
+
   .carousel-item {
     margin-right: 0;
     flex: 0 0 33.333333%;
@@ -77,7 +77,7 @@ a.navigation:active {
   .carousel-inner {
     display: flex;
   }
-}
+
 	
     </style>
 <!-- Primary Meta Tags -->
@@ -637,7 +637,7 @@ a.navigation:active {
 var multipleCardCarousel = document.querySelector(
   "#carouselExampleControls"
 );
-if (window.matchMedia("(min-width: 768px)").matches) {
+
   var carousel = new bootstrap.Carousel(multipleCardCarousel, {
     interval: false,
   });
@@ -662,9 +662,7 @@ if (window.matchMedia("(min-width: 768px)").matches) {
       );
     }
   });
-} else {
-  $(multipleCardCarousel).addClass("slide");
-}
+} 
 </script>	
   </body>
 </html>
